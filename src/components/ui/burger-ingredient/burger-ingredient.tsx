@@ -1,11 +1,11 @@
-import React, { FC, memo } from 'react';
+import { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './burger-ingredient.module.css';
 
 import {
+  AddButton,
   Counter,
-  CurrencyIcon,
-  AddButton
+  CurrencyIcon
 } from '@zlden/react-developer-burger-ui-components';
 
 import { TBurgerIngredientUIProps } from './type';
