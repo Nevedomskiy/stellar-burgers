@@ -8,16 +8,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: [
+          {
+            loader: 'babel-loader' // Применяем Babel после TypeScript
+          },
+          {
+            loader: 'ts-loader' // Сначала обрабатываем TypeScript
+          }
+        ]
       },
       {
-        test: /\.(ts)x?$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'ts-loader'
-        }
+        use: ['babel-loader'] // Обрабатываем JavaScript только через Babel
       },
       {
         test: /\.css$/,

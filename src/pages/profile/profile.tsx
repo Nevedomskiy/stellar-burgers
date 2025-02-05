@@ -1,11 +1,16 @@
+import { Preloader } from '@ui';
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { selectUser, updateUserInfo } from '../../services/slices/userSlice';
+import {
+  selectIsLoadingUser,
+  selectUser,
+  updateUserInfo
+} from '../../services/slices/userSlice';
 import { useDispatch, useSelector } from '../../services/store/store';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
   const user = useSelector(selectUser);
+  const isLoading = useSelector(selectIsLoadingUser);
   const dispatch = useDispatch();
   const [formValue, setFormValue] = useState({
     name: user.name,
@@ -19,7 +24,7 @@ export const Profile: FC = () => {
       name: user?.name || '',
       email: user?.email || ''
     }));
-  }, []);
+  }, [user]);
 
   const isFormChanged =
     formValue.name !== user?.name ||
@@ -28,16 +33,11 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    if (
-      formValue.password === '' ||
-      formValue.name === '' ||
-      formValue.email === ''
-    ) {
+    if (formValue.name === '' || formValue.email === '') {
       return;
     }
-    dispatch(updateUserInfo(formValue)).finally(() => {
-      handleCancel(e);
-    });
+
+    dispatch(updateUserInfo(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -57,12 +57,18 @@ export const Profile: FC = () => {
   };
 
   return (
-    <ProfileUI
-      formValue={formValue}
-      isFormChanged={isFormChanged}
-      handleCancel={handleCancel}
-      handleSubmit={handleSubmit}
-      handleInputChange={handleInputChange}
-    />
+    <>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <ProfileUI
+          formValue={formValue}
+          isFormChanged={isFormChanged}
+          handleCancel={handleCancel}
+          handleSubmit={handleSubmit}
+          handleInputChange={handleInputChange}
+        />
+      )}
+    </>
   );
 };

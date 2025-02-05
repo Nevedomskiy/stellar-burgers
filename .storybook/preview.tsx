@@ -1,5 +1,5 @@
-import React from 'react';
 import type { Preview } from '@storybook/react';
+import * as React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 const preview: Preview = {

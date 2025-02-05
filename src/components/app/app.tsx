@@ -27,7 +27,6 @@ const App = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const backgroundLocation = location.state?.background;
-
   const closeModal = () => {
     navigate(-1);
   };

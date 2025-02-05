@@ -1,8 +1,8 @@
-import { getOrdersApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import { getOrdersApi, orderBurgerApi } from '../../utils/burger-api';
 
-interface ordersState {
+export interface ordersState {
   constructorItems: {
     bun: TIngredient | null;
     ingredients: TConstructorIngredient[];
@@ -14,7 +14,7 @@ interface ordersState {
   error: null | string | undefined;
 }
 
-const initialState: ordersState = {
+export const initialState: ordersState = {
   constructorItems: {
     bun: null,
     ingredients: []
@@ -56,21 +56,31 @@ const ordersSlice = createSlice({
     downIngredientInOrder: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       const temp = state.constructorItems.ingredients[index];
-      state.constructorItems.ingredients[index] =
-        state.constructorItems.ingredients[index + 1];
-      state.constructorItems.ingredients[index + 1] = temp;
+      state.constructorItems.ingredients[index] = {
+        ...state.constructorItems.ingredients[index + 1],
+        id: index.toString()
+      };
+      state.constructorItems.ingredients[index + 1] = {
+        ...temp,
+        id: (index + 1).toString()
+      };
     },
     upIngredientInOrder: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       const temp = state.constructorItems.ingredients[index];
-      state.constructorItems.ingredients[index] =
-        state.constructorItems.ingredients[index - 1];
-      state.constructorItems.ingredients[index - 1] = temp;
+      state.constructorItems.ingredients[index] = {
+        ...state.constructorItems.ingredients[index - 1],
+        id: index.toString()
+      };
+      state.constructorItems.ingredients[index - 1] = {
+        ...temp,
+        id: (index - 1).toString()
+      };
     },
     removeIngredientInOrder: (state, action: PayloadAction<string>) => {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
-          (item) => item._id !== action.payload
+          (item) => item.id !== action.payload
         );
     },
     resetOrder: (state) => initialState

@@ -28,9 +28,5 @@
       "@selectors": ["src/services/selectors"]
     }
   },
-  "include": [
-    "src",
-    "src/components/ui/orders-list",
-    "src/components/protected-route/protected-route.tsx"
-  ]
+  "include": ["src"]
 }

@@ -2,7 +2,6 @@ import { getCookie, setCookie } from './cookie';
 import { TIngredient, TOrder, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
-// console.log(URL);
 
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -42,13 +41,10 @@ export const fetchWithRefresh = async <T>(
 ) => {
   try {
     const res = await fetch(url, options);
-    // console.log(res.ok);
+
     return await checkResponse<T>(res);
   } catch (err) {
-    if (
-      (err as { message: string }).message ===
-      ('jwt expired' || 'You should be authorised')
-    ) {
+    if ((err as { message: string }).message === 'jwt expired') {
       const refreshData = await refreshToken();
       if (options.headers) {
         (options.headers as { [key: string]: string }).authorization =
